@@ -8,16 +8,13 @@ var ii = 0;
 var i = 0;
 var averageScore = 0;
 var correct = 0;
-var trueFalse = true;
+var timeleft = 100;
+var elem = "";
 
 
 function timerQuiz() {
-    var actionContainerEl = document.createElement("div");
-    actionContainerEl.id = "countdown";
-
-    var timeleft = 100;
     var quizTimer = setInterval(function(){
-        if(timeleft <= 0){
+        if(timeleft <= 0 || i >= 6){
             clearInterval(quizTimer);
             document.getElementById("countdown").innerHTML = "Finished";
         } else {
@@ -28,40 +25,25 @@ function timerQuiz() {
 }
 
 
-var createQuizActions = function() {
-    var actionContainerEl = document.createElement("div");
-    actionContainerEl.className = "quiz-actions";
-    actionContainerEl.innerHTML = "<h3 class='quizQuestion-name'>" + questions[i] + "</h3>";
-    
-    var firstButtonEl = document.createElement("button");
-    firstButtonEl.textContent = choices[i][ii];
-    firstButtonEl.className = "btn first-btn";
-    ii++;
+var remove = function(strng, stng, strg, strn, stri){
+    elem = document.getElementById(strng);
+    elem.remove();
+    elem = document.getElementById(stng);
+    elem.remove();
+    elem = document.getElementById(strg);
+    elem.remove();
+    elem = document.getElementById(strn);
+    elem.remove();
+    elem = document.getElementById(stri);
+    elem.remove();
+}
 
-    var secondButtonEl = document.createElement("button");
-    secondButtonEl.textContent = choices[i][ii];
-    secondButtonEl.className = "btn second-btn";
-    ii++;
 
-    var thirdButtonEl = document.createElement("button");
-    thirdButtonEl.className = choices[i][ii];
-    thirdButtonEl.className = "btn third-btn";
-    ii++;
-
-    var fourthButtonEl = document.createElement("button");
-    fourthButtonEl.className = choices[i][ii];
-    fourthButtonEl.className = "btn fourth-btn";
-    ii = 0;
-
-    while(trueFalse){
-        firstButtonEl.addEventListener("click", correctChoice(0))
-        secondButtonEl.addEventListener("click", correctChoice(1))
-        thirdButtonEl.addEventListener("click", correctChoice(2))
-        fourthButtonEl.addEventListener("click", correctChoice(3))
-
-        console.log("testing")
-        console.log(actionContainerEl)
-    }
+var endFun = function(){
+    var end = document.createElement("h3");
+    end.innerHTML = "You got a scored of " + averageScore;
+    var body = document.getElementsByTagName("body")[0];
+    body.appendChild(end);
 }
 
 
@@ -69,30 +51,94 @@ var correctChoice = function(num){
     if(answers[i] === choices[i][num]) {
         correct++;
     }
-
-    if (i === 5){
-        averageScore = Math.round(correct * 16.666);
-    }else{
-        i++;
-    }
-
-    trueFalse = false;
+    i++;
 }
 
 
-var quiz = function() {
+var quiz = function(){
     timerQuiz();
-    for(var n = 0; n < 6; n++){
-        debugger;
-        createQuizActions();
-    }
-
-    clearInterval(timeInterval);
+    createQuizActions();
 }
 
 
-var saveScore = function(){
+var createQuizActions = function(){
 
+    if(i === 6){
+        averageScore = Math.round(correct * 16.6667)
+        endFun();
+        return;
+    }
+
+    var question = document.createElement("h3");
+    question.innerHTML = questions[i];
+    question.setAttribute("id", "type-questions")
+    var body = document.getElementsByTagName("body")[0];
+    body.appendChild(question);
+
+
+    var button = document.createElement("button");
+    button.innerHTML = choices[i][ii];
+    button.setAttribute("id", "fi-button")
+    body.appendChild(button);
+    ii++;
+
+
+    var buttonS = document.createElement("button");
+    buttonS.innerHTML = choices[i][ii];
+    buttonS.setAttribute("id", "se-button")
+    body.appendChild(buttonS);
+    ii++;
+
+
+    var buttonT = document.createElement("button");
+    buttonT.innerHTML = choices[i][ii];
+    buttonT.setAttribute("id", "th-button")
+    body.appendChild(buttonT);
+    ii++;
+
+
+    var buttonF = document.createElement("button");
+    buttonF.innerHTML = choices[i][ii];
+    buttonF.setAttribute("id", "fo-button")
+    body.appendChild(buttonF);
+    ii = 0;
+
+
+    button.addEventListener ("click", function(){
+        if(answers[i] === choices[i][0]) {
+            correct++;
+        }
+        i++;
+        remove("type-questions", "fi-button", "se-button", "th-button", "fo-button");
+        createQuizActions();
+    });
+
+    buttonS.addEventListener ("click", function(){
+        if(answers[i] === choices[i][1]) {
+            correct++;
+        }
+        i++;
+        remove("type-questions", "fi-button", "se-button", "th-button", "fo-button");
+        createQuizActions();
+    });
+
+    buttonT.addEventListener ("click", function(){
+        if(answers[i] === choices[i][2]) {
+            correct++;
+        }
+        i++;
+        remove("type-questions", "fi-button", "se-button", "th-button", "fo-button");
+        createQuizActions();
+    });
+
+    buttonF.addEventListener ("click", function(){
+        if(answers[i] === choices[i][3]) {
+            correct++;
+        }
+        i++;
+        remove("type-questions", "fi-button", "se-button", "th-button", "fo-button");
+        createQuizActions();
+    });
 }
 
 
@@ -132,12 +178,16 @@ questions[4] = "5) Semicolons are optional at the end of a JavaScript statement.
 choices[4] = new Array();
 choices[4][0] = "True";
 choices[4][1] = "False";
+choices[4][2] = "Both";
+choices[4][3] = "Neither";
 answers[4] = choices[4][0];
 
 questions[5] = "6) JavaScript can only run on Windows";
 choices[5] = new Array();
 choices[5][0] = "True";
 choices[5][1] = "False";
+choices[5][2] = "Both";
+choices[5][3] = "Neither";
 answers[5] = choices[5][1];
 
 
