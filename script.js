@@ -1,6 +1,4 @@
-var quiz = window.alert("Here's your first Code quiz, ENJOY!")
 var mainEl = document.getElementById("countdown");
-var howCorrect = window.prompt("How many questions can you get correct?") 
 var questions = new Array();
 var choices = new Array();
 var answers = new Array();
@@ -25,6 +23,20 @@ function timerQuiz() {
 }
 
 
+var startButton = function(){
+    var button = document.createElement("button");
+    button.innerHTML = "start";
+    var body = document.getElementsByTagName("body")[0];
+    button.setAttribute("id", "start-button")
+    body.appendChild(button);
+
+    button.addEventListener ("click", function(){
+        button.remove();
+        quiz();
+    })
+}
+
+
 var remove = function(strng, stng, strg, strn, stri){
     elem = document.getElementById(strng);
     elem.remove();
@@ -44,12 +56,49 @@ var endFun = function(){
     end.innerHTML = "You got a scored of " + averageScore;
     var body = document.getElementsByTagName("body")[0];
     body.appendChild(end);
+    saveHigh();
+}
+
+
+var saveHigh = function(){
+
+    var scoreInput = document.createElement("input");
+    var body = document.getElementsByTagName("body")[0];
+    body.appendChild(scoreInput);
+
+    var end = document.createElement("h3");
+    end.innerHTML = "Type your name";
+    body.appendChild(end);
+
+    var button = document.createElement("button");
+    button.innerHTML = "Submit";
+    button.setAttribute("id", "sub-button")
+    body.appendChild(button);
+    button.appendChild(end);
+
+    button.addEventListener("click", function(){
+
+    var lastHighScore = localStorage.getItem("high score");
+
+    if(!lastHighScore){
+        lastHighScore = null;
+    }else{
+        lastHighScore = JSON.parse(lastHighScore);
+    }
+
+    if(averageScore > lastHighScore || lastHighScore === null){
+        localStorage.setItem("name", scoreInput.value);
+        localStorage.setItem("high score", JSON.stringify(averageScore));
+    }
+    })
 }
 
 
 var correctChoice = function(num){
     if(answers[i] === choices[i][num]) {
         correct++;
+    }else{
+        timeleft =- 15;
     }
     i++;
 }
@@ -191,4 +240,4 @@ choices[5][3] = "Neither";
 answers[5] = choices[5][1];
 
 
-quiz();
+startButton();
